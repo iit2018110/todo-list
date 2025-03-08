@@ -1,7 +1,7 @@
 package org.example.service.impl;
 
 import org.example.dto.TaskDto;
-import org.example.enums.TaskState;
+import org.example.enums.TaskStatus;
 import org.example.service.TaskService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -43,7 +43,7 @@ class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskDto> getAllTasks(TaskState status) {
+    public List<TaskDto> getAllTasks(TaskStatus status) {
         if (status == null) {
             return new ArrayList<>(taskStore.values());
         }
@@ -70,7 +70,7 @@ class TaskServiceImpl implements TaskService {
     public double getTaskProgress(Long taskId) {
         List<TaskDto> subtasks = subtaskStore.getOrDefault(taskId, new ArrayList<>());
         if (subtasks.isEmpty()) return 100.0;
-        long completed = subtasks.stream().filter(s -> s.getState() == TaskState.COMPLETED).count();
+        long completed = subtasks.stream().filter(s -> s.getState() == TaskStatus.COMPLETED).count();
         return (double) completed / subtasks.size() * 100;
     }
 
@@ -85,10 +85,10 @@ class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDto updateTaskStatus(Long taskId, TaskState state) {
+    public TaskDto updateTaskStatus(Long taskId, TaskStatus status) {
         TaskDto task = taskStore.get(taskId);
         if (task != null) {
-            task.setState(state);
+            task.setState(status);
         }
         return task;
     }
@@ -107,11 +107,11 @@ class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskDto updateSubtaskStatus(Long taskId, Long subtaskId, TaskState state) {
+    public TaskDto updateSubtaskStatus(Long taskId, Long subtaskId, TaskStatus status) {
         List<TaskDto> subtasks = subtaskStore.getOrDefault(taskId, new ArrayList<>());
         for (TaskDto subtask : subtasks) {
             if (subtask.getId().equals(subtaskId)) {
-                subtask.setState(state);
+                subtask.setState(status);
                 return subtask;
             }
         }

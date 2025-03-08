@@ -2,7 +2,7 @@ package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.TaskDto;
-import org.example.enums.TaskState;
+import org.example.enums.TaskStatus;
 import org.example.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -25,7 +25,7 @@ public class TaskController {
     }
 
     @GetMapping("/")
-    public List<TaskDto> getAllTasks(@RequestParam(required = false) TaskState status) {
+    public List<TaskDto> getAllTasks(@RequestParam(required = false) TaskStatus status) {
         return taskService.getAllTasks(status);
     }
 
@@ -56,13 +56,13 @@ public class TaskController {
     }
 
     @PatchMapping("/{taskId}/status")
-    public TaskDto updateTaskStatus(@PathVariable Long taskId, @RequestParam TaskState state) {
-        return taskService.updateTaskStatus(taskId, state);
+    public TaskDto updateTaskStatus(@PathVariable Long taskId, @RequestParam TaskStatus status) {
+        return taskService.updateTaskStatus(taskId, status);
     }
 
     @PatchMapping("/{taskId}/subtasks/{subtaskId}/status")
-    public TaskDto updateSubtaskStatus(@PathVariable Long taskId, @PathVariable Long subtaskId, @RequestParam TaskState state) {
-        return taskService.updateSubtaskStatus(taskId, subtaskId, state);
+    public TaskDto updateSubtaskStatus(@PathVariable Long taskId, @PathVariable Long subtaskId, @RequestParam TaskStatus status) {
+        return taskService.updateSubtaskStatus(taskId, subtaskId, status);
     }
 
     @DeleteMapping("/{taskId}")

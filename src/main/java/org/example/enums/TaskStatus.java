@@ -1,6 +1,6 @@
 package org.example.enums;
 
-public enum TaskState {
+public enum TaskStatus {
     PENDING,
     INCOMPLETE,
     COMPLETED
