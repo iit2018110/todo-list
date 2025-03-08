@@ -69,7 +69,7 @@ class TaskServiceImpl implements TaskService {
     @Override
     public double getTaskProgress(Long taskId) {
         List<TaskDto> subtasks = subtaskStore.getOrDefault(taskId, new ArrayList<>());
-        if (subtasks.isEmpty()) return 0.0;
+        if (subtasks.isEmpty()) return 100.0;
         long completed = subtasks.stream().filter(s -> s.getState() == TaskState.COMPLETED).count();
         return (double) completed / subtasks.size() * 100;
     }
